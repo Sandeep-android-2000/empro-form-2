@@ -1,4 +1,4 @@
-<div class="max-w-lg mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+<!-- <div class="max-w-lg mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
       <div>
         <label for="unit" class="block text-sm font-medium text-gray-700">Unit</label>
@@ -110,5 +110,197 @@
         </button>
       </div>
     </form>
+  </div>
+   -->
+
+   <div class="max-w-3xl mx-auto mt-8 p-6 bg-white shadow-md rounded-lg">
+    <h2 class="text-2xl font-bold mb-4">Generate Reports</h2>
+  
+    <form [formGroup]="reportForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Database Details -->
+      <div>
+        <label for="unit" class="block text-sm font-medium text-gray-700">Unit</label>
+        <input
+          id="unit"
+          type="text"
+          formControlName="unit"
+          class="mt-1 block w-full p-2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          placeholder="Enter Unit"
+        />
+        @if(reportForm.get('unit')?.invalid && reportForm.get('unit')?.touched){       
+            <div  class="text-red-500 text-sm">
+              Unit is required.
+            </div>
+        }
+      </div>
+  
+      <div>
+        <label for="invoice1" class="block text-sm font-medium text-gray-700">Invoice 1</label>
+        <input
+          id="invoice1"
+          type="text"
+          formControlName="invoice1"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
+          placeholder="Enter Invoice 1"
+        />
+
+        @if(reportForm.get('invoice1')?.invalid && reportForm.get('invoice1')?.touched){         
+            <div  class="text-red-500 text-sm">
+              Invoice 1 is required.
+            </div>
+        }
+      </div>
+  
+      <div>
+        <label for="invoice2" class="block text-sm font-medium text-gray-700">Invoice 2</label>
+        <input
+          id="invoice2"
+          type="text"
+          formControlName="invoice2"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
+          placeholder="Enter Invoice 2"
+        />
+        @if(reportForm.get('invoice2')?.invalid && reportForm.get('invoice2')?.touched){          
+            <div class="text-red-500 text-sm">
+              Invoice 2 is required.
+            </div>
+        }
+      </div>
+  
+      <!-- <div>
+        <label for="databaseUrl" class="block text-sm font-medium text-gray-700">Database URL</label>
+        <input
+          id="databaseUrl"
+          type="text"
+          formControlName="databaseUrl"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
+          placeholder="Enter Database URL"
+        />
+
+        @if(reportForm.get('databaseUrl')?.invalid && reportForm.get('databaseUrl')?.touched){          
+            <div  class="text-red-500 text-sm">
+              Enter a valid URL.
+            </div>
+        }
+      </div> -->
+  
+      <!-- <div>
+        <label for="reportName" class="block text-sm font-medium text-gray-700">Report Name</label>
+        <input
+          id="reportName"
+          type="text"
+          formControlName="reportName"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
+          placeholder="Enter Report Name"
+        />
+        @if(reportForm.get('reportName')?.invalid && reportForm.get('reportName')?.touched){          
+            <div  class="text-red-500 text-sm">
+              Report Name is required.
+            </div>
+        }
+      </div> -->
+  
+      <!-- <div>
+        <label for="reportPath" class="block text-sm font-medium text-gray-700">Report Path</label>
+        <input
+          id="reportPath"
+          type="text"
+          formControlName="reportPath"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
+          placeholder="Enter Report Path"
+        />
+
+        @if(reportForm.get('reportPath')?.invalid && reportForm.get('reportPath')?.touched){
+            <div  class="text-red-500 text-sm">
+              Report Path is required.
+            </div>
+
+        }
+      </div> -->
+      <div formGroupName="dataSource">
+        <label class="block text-sm font-medium text-gray-700">Database URL</label>
+        <input
+          type="text"
+          formControlName="url"
+          class="block w-full mt-1 p-2 border rounded-md"
+          placeholder="Enter Database URL"
+        />
+        <div *ngIf="reportForm.get('dataSource.url')?.invalid && reportForm.get('dataSource.url')?.touched" class="text-red-500 text-sm">
+          Please enter a valid URL.
+        </div>
+  
+        <label class="block text-sm font-medium text-gray-700 mt-4">Database Username</label>
+        <input
+          type="text"
+          formControlName="username"
+          class="block w-full mt-1 p-2 border rounded-md"
+          placeholder="Enter Username"
+        />
+  
+        <label class="block text-sm font-medium text-gray-700 mt-4">Database Password</label>
+        <input
+          type="password"
+          formControlName="password"
+          class="block w-full mt-1 p-2 border rounded-md"
+          placeholder="Enter Password"
+        />
+      </div>
+  
+      <!-- Parameters -->
+      <div formGroupName="parameters" class="mt-6">
+        <label class="block text-sm font-medium text-gray-700">Report Title</label>
+        <input
+          type="text"
+          formControlName="reportTitle"
+          class="block w-full mt-1 p-2 border rounded-md"
+          placeholder="Enter Report Title"
+        />
+      </div>
+  
+      <!-- Reports -->
+      <div formArrayName="reports" class="mt-6">
+        <div
+          *ngFor="let report of reports.controls; let i = index"
+          [formGroupName]="i"
+          class="border p-4 rounded-md mb-4"
+        >
+          <label class="block text-sm font-medium text-gray-700">Report Path</label>
+          <input
+            type="text"
+            formControlName="reportPath"
+            class="block w-full mt-1 p-2 border rounded-md"
+            placeholder="Enter Report Path"
+          />
+          <button
+            type="button"
+            (click)="removeReport(i)"
+            class="mt-2 text-red-500 hover:underline"
+          >
+            Remove
+          </button>
+        </div>
+        <button
+          type="button"
+          (click)="addReport()"
+          class="mt-4 text-blue-500 hover:underline"
+        >
+          Add Report
+        </button>
+      </div>
+      
+  
+      <!-- Submit -->
+      <button
+        type="submit"
+        class="w-full bg-blue-500 text-white py-2 px-4 rounded-md"
+        [disabled]="reportForm.invalid"
+      >
+        Submit
+      </button>
+    </form>
+  
+    <div *ngIf="responseMessage" class="mt-6 text-lg">
+      {{ responseMessage }}
+    </div>
   </div>
   
